@@ -10,9 +10,11 @@ gem 'hirb'
 gem 'rake'
 gem 'tux'
 
+gem 'econfig'
 gem 'rbnacl-libsodium'
 
 group :development do
+  gem 'pry'
   gem 'rerun'
 end
 

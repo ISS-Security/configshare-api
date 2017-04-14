@@ -2,9 +2,29 @@ require 'json'
 require 'base64'
 require 'sequel'
 
+require_relative '../lib/secure_db'
+
 # Holds a full configuration file's information
 class Configuration < Sequel::Model
+  plugin :uuid, field: :id
   many_to_one :project
+  set_allowed_columns :filename, :relative_path, :description
+
+  def description=(desc_plain)
+    self.description_secure = SecureDB.encrypt(desc_plain)
+  end
+
+  def description
+    SecureDB.decrypt(description_secure)
+  end
+
+  def document=(doc_plain)
+    self.document_secure = SecureDB.encrypt(doc_plain)
+  end
+
+  def document
+    SecureDB.decrypt(document_secure)
+  end
 
   def to_json(options = {})
     JSON({
@@ -12,14 +32,9 @@ class Configuration < Sequel::Model
            id: id,
            data: {
              name: filename,
-             description: description,
-             base64_document: base64_document
+             description: description
            }
          },
          options)
-  end
-
-  def document
-    Base64.strict_decode64 base64_document
   end
 end

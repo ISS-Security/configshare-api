@@ -1,14 +1,9 @@
-require './app'
 require 'rake/testtask'
+require './init.rb'
 
 puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
 
 task default: [:spec]
-
-desc 'Tests API root route'
-task :api_spec do
-  sh 'ruby specs/api_spec.rb'
-end
 
 desc 'Run all the tests'
 Rake::TestTask.new(:spec) do |t|
@@ -22,7 +17,6 @@ task rubo: [:spec] do
 end
 
 namespace :db do
-  require 'sequel'
   Sequel.extension :migration
 
   desc 'Run migrations'
@@ -41,4 +35,11 @@ namespace :db do
 
   desc 'Perform migration reset (full rollback and migration)'
   task reset: [:rollback, :migrate]
+end
+
+namespace :crypto do
+  desc 'Create sample cryptographic key for database'
+  task :db_key do
+    puts "DB_KEY: #{SecureDB.generate_key}"
+  end
 end

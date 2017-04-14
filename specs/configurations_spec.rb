@@ -29,12 +29,11 @@ describe 'Testing Configuration resource routes' do
 
     it 'SAD: should catch duplicate config files within a project' do
       existing_project = Project.create(name: 'Demo Project')
-
       req_header = { 'CONTENT_TYPE' => 'application/json' }
-      req_body = { filename: 'Demo Configuration' }.to_json
+      req_body = { filename: 'conflict.yml' }.to_json
       url = "/api/v1/projects/#{existing_project.id}/configurations"
-      post url, req_body, req_header
-      post url, req_body, req_header
+
+      2.times { post url, req_body, req_header }
       _(last_response.status).must_equal 400
       _(last_response.location).must_be_nil
     end

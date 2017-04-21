@@ -1,0 +1,19 @@
+---
+- :filename: config_env.rb
+  :document: |-
+    ENV['asdf']='asdfasdf123'
+    ENV['abc']='abcdefghi'
+  :description: environmental configurations for test, development envs
+- :filename: app.yml
+  :document: |-
+    ---
+      val: 123
+  :description: credentials file
+- :filename: config.json
+  :document: '{ "name": "some name"}'
+  :description: credentials file
+- :filename: conf.yml
+  :document: |-
+    ---
+      token: ljkasdfk
+  :description: access tokens

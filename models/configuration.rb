@@ -7,8 +7,11 @@ require_relative '../lib/secure_db'
 # Holds a full configuration file's information
 class Configuration < Sequel::Model
   plugin :uuid, field: :id
-  many_to_one :project
   set_allowed_columns :filename, :relative_path, :description
+
+  many_to_one :project
+
+  plugin :timestamps, update_on_create: true
 
   def description=(desc_plain)
     self.description_secure = SecureDB.encrypt(desc_plain)

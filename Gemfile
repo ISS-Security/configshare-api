@@ -1,16 +1,19 @@
 source 'https://rubygems.org'
 ruby '2.4.0'
 
-gem 'json'
+gem 'econfig'
 gem 'puma'
-gem 'sequel'
 gem 'sinatra'
+
+gem 'sequel'
+gem 'sequel-seed'
+
+gem 'json'
 
 gem 'hirb'
 gem 'rake'
 gem 'tux'
 
-gem 'econfig'
 gem 'rbnacl-libsodium'
 
 group :development do
@@ -27,4 +30,8 @@ end
 group :development, :test do
   gem 'rubocop'
   gem 'sqlite3'
+end
+
+group :production do
+  gem 'pg'
 end

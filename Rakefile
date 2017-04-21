@@ -33,8 +33,26 @@ namespace :db do
     Sequel::Migrator.run(DB, 'db/migrations', target: target)
   end
 
-  desc 'Perform migration reset (full rollback and migration)'
-  task reset: [:rollback, :migrate]
+  task :reset_seeds do
+    tables = [:schema_seeds, :accounts, :projects,
+              :accounts_projects, :configurations]
+    tables.each { |table| DB[table].delete }
+  end
+
+  desc 'Seeds the development database'
+  task :seed do
+    require 'sequel'
+    require 'sequel/extensions/seed'
+    Sequel::Seed.setup(:development)
+    Sequel.extension :seed
+    Sequel::Seeder.apply(DB, 'db/seeds')
+  end
+
+  desc 'Delete all data and reseed'
+  task reseed: [:reset_seeds, :seed]
+
+  desc 'Perform migration reset (full rollback, migration, and reseed)'
+  task reset: [:rollback, :migrate, :reseed]
 end
 
 namespace :crypto do

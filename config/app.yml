@@ -1,0 +1,9 @@
+---
+development:
+  SECURE_SCHEME: 'HTTP'
+
+test:
+  SECURE_SCHEME: 'HTTP'
+
+production:
+  SECURE_SCHEME: 'HTTPS'

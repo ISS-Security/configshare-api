@@ -12,8 +12,14 @@ class ShareConfigurationsAPI < Sinatra::Base
     SecureDB.setup(settings.config)
   end
 
+  def secure_request?
+    request.scheme.casecmp(settings.config.SECURE_SCHEME).zero?
+  end
+
   before do
-    host_url = "#{request.env['rack.url_scheme']}://#{request.env['HTTP_HOST']}"
+    halt(403, 'Use HTTPS only') unless secure_request?
+
+    host_url = "#{settings.config.SECURE_SCHEME}://#{request.env['HTTP_HOST']}"
     @request_url = URI.join(host_url, request.path.to_s)
   end
 

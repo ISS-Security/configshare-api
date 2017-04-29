@@ -1,8 +1,6 @@
 require 'rake/testtask'
 require './init.rb'
 
-puts "Environment: #{ENV['RACK_ENV'] || 'development'}"
-
 task default: [:spec]
 
 desc 'Run all the tests'

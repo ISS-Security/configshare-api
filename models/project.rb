@@ -10,7 +10,8 @@ class Project < Sequel::Model
   one_to_many :configurations
 
   plugin :timestamps, update_on_create: true
-  plugin :association_dependencies, configurations: :destroy
+  plugin :association_dependencies
+  add_association_dependencies configurations: :destroy, contributors: :nullify
 
   def to_json(options = {})
     JSON({

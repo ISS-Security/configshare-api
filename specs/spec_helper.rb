@@ -6,6 +6,9 @@ require 'rack/test'
 
 require './init.rb'
 
+load 'Rakefile'
+Rake::Task['db:reset'].invoke
+
 include Rack::Test::Methods
 
 def app

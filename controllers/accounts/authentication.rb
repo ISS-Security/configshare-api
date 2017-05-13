@@ -5,13 +5,13 @@ class ShareConfigurationsAPI < Sinatra::Base
   post '/api/v1/accounts/authenticate' do
     content_type 'application/json'
     begin
-      credentials = JSON.parse(request.body.read)
-      account = AuthenticateAccount.call(credentials)
+      credentials = JsonRequestBody.parse_symbolize(request.body.read)
+      authenticated = AuthenticateAccount.call(credentials)
     rescue => e
       halt 500
-      logger.info "Cannot authenticate #{credentials['username']}: #{e}"
+      logger.info "Cannot authenticate: #{e}"
     end
-
-    account ? { account: account }.to_json : status(403)
+    puts "AUTH: #{authenticated}"
+    authenticated ? authenticated.to_json : halt(403)
   end
 end

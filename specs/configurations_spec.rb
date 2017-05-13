@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 require_relative './spec_helper'
 
 describe 'Testing Configuration resource routes' do
   before do
-    Project.dataset.delete
-    Configuration.dataset.delete
+    Configuration.dataset.destroy
+    Project.dataset.destroy
+    Account.dataset.destroy
   end
 
   describe 'Creating new configurations for projects' do
@@ -62,5 +65,31 @@ describe 'Testing Configuration resource routes' do
       get "/api/v1/projects/#{proj_id}/configurations/#{config_id}"
       _(last_response.status).must_equal 404
     end
+  end
+end
+
+describe 'Creating Secure Content on Configurations' do
+  before do
+    Configuration.dataset.destroy
+    Project.dataset.destroy
+    Account.dataset.destroy
+  end
+
+  it 'HAPPY: should find existing configuration' do
+    plaindesc = 'config file'
+    plaindoc = "---\nSECRET: secrets here"
+    project = Project.create(name: 'Demo Project')
+    config = CreateConfigurationForProject.call(
+      project: project, filename: 'config.yml',
+      description: plaindesc, document: plaindoc
+    )
+
+    _(config.document).must_equal plaindoc
+    _(config.document_secure).wont_equal plaindoc
+    _(config.document_secure).wont_be_nil
+
+    _(config.description).must_equal plaindesc
+    _(config.description_secure).wont_equal plaindesc
+    _(config.description_secure).wont_be_nil
   end
 end

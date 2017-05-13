@@ -29,15 +29,29 @@ class Configuration < Sequel::Model
     SecureDB.decrypt(document_secure)
   end
 
+  def to_full_json(options = {})
+    JSON({  type: 'configuration',
+            id: id,
+            attributes: {
+              filename: filename,
+              relative_path: relative_path,
+              description: description,
+              document: (document ? Base64.strict_encode64(document) : nil)
+            },
+            relationships: { project: project }
+          },
+         options)
+  end
+
   def to_json(options = {})
-    JSON({
-           type: 'configuration',
-           id: id,
-           data: {
-             name: filename,
-             description: description
-           }
-         },
+    JSON({  type: 'configuration',
+            id: id,
+            attributes: {
+              filename: filename,
+              relative_path: relative_path,
+              description: description
+            }
+          },
          options)
   end
 end

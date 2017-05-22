@@ -13,20 +13,14 @@ class Project < Sequel::Model
   plugin :association_dependencies
   add_association_dependencies configurations: :destroy, contributors: :nullify
 
-  def to_full_json(options = {})
-    JSON({  type: 'project',
-            id: id,
-            attributes: {
-              name: name,
-              repo_url: repo_url
-            },
-            relationships: {
-              owner: owner,
-              contributors: contributors,
-              configurations: configurations
-            }
-          },
-         options)
+  def full_details
+    { type: 'project',
+      id: id,
+      attributes: {
+        name: name,
+        repo_url: repo_url
+      },
+      relationships: relationships }
   end
 
   def to_json(options = {})
@@ -42,5 +36,15 @@ class Project < Sequel::Model
             }
           },
          options)
+  end
+
+  private
+
+  def relationships
+    {
+      owner: owner,
+      contributors: contributors,
+      configurations: configurations
+    }
   end
 end

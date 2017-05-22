@@ -102,9 +102,9 @@ describe 'Testing Project resource routes' do
       @my_projs = []
       3.times do |i|
         @my_projs << @my_account.add_owned_project(
-          name: "Project #{@my_account.id}-#{i}")
+          name: "Project #{@my_account.id}_#{i}")
         @other_account.add_owned_project(
-          name: "Project #{@other_account.id}-#{i}")
+          name: "Project #{@other_account.id}_#{i}")
       end
 
       @other_account.owned_projects.each.with_index do |proj, i|

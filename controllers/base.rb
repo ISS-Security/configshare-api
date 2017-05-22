@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'econfig'
 require 'sinatra'
 
@@ -19,13 +20,15 @@ class ShareConfigurationsAPI < Sinatra::Base
 
   def authenticated_account(env)
     scheme, auth_token = env['HTTP_AUTHORIZATION'].split(' ')
+    return nil unless scheme.match?(/^Bearer$/i)
+
     account_payload = AuthToken.payload(auth_token)
-    scheme.match?(/^Bearer$/i) ? account_payload : nil
+    Account[account_payload['id']]
   end
 
   def authorized_account?(env, id)
     account = authenticated_account(env)
-    account['id'].to_s == id.to_s
+    account.id.to_s == id.to_s
   rescue
     false
   end

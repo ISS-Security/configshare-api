@@ -4,6 +4,7 @@ Sequel.seed(:development) do
     create_accounts
     create_projects
     create_configurations
+    add_contributors
   end
 end
 
@@ -11,7 +12,8 @@ require 'yaml'
 DIR = File.dirname(__FILE__)
 ALL_ACCOUNTS_INFO = YAML.load_file("#{DIR}/accounts_seed.yml")
 ALL_PROJ_INFO = YAML.load_file("#{DIR}/projects_seed.yml")
-ALL_CONF_INFO = YAML.load_file("#{DIR}/configurations_seed.yml")
+ALL_CONFIG_INFO = YAML.load_file("#{DIR}/configurations_seed.yml")
+ALL_CONTRIB_INFO = YAML.load_file("#{DIR}/contributors_seed.yml")
 
 def create_accounts
   ALL_ACCOUNTS_INFO.each do |account_info|
@@ -31,7 +33,7 @@ def create_projects
 end
 
 def create_configurations
-  conf_info_each = ALL_CONF_INFO.each
+  conf_info_each = ALL_CONFIG_INFO.each
   projects_cycle = Project.all.cycle
   loop do
     conf_info = conf_info_each.next
@@ -40,5 +42,14 @@ def create_configurations
       project: project, filename: conf_info[:filename],
       description: conf_info[:description], document: conf_info[:document]
     )
+  end
+end
+
+def add_contributors
+  contrib_info = ALL_CONTRIB_INFO
+  contrib_info.each do |contrib|
+    proj = Project.find(name: contrib['proj_name'])
+    contributor = Account.find(username: contrib['contributor_name'])
+    proj.add_contributor(contributor)
   end
 end

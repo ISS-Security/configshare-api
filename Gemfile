@@ -2,13 +2,14 @@ source 'https://rubygems.org'
 ruby '2.4.0'
 
 gem 'econfig'
+gem 'json'
 gem 'puma'
 gem 'sinatra'
 
 gem 'sequel'
 gem 'sequel-seed'
 
-gem 'json'
+gem 'http'
 
 gem 'hirb'
 gem 'rake'

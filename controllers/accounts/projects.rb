@@ -8,7 +8,7 @@ class ShareConfigurationsAPI < Sinatra::Base
 
     begin
       requesting_account = authenticated_account(env)
-      target_account = Account[params[:account_id]]
+      target_account = BaseAccount[params[:account_id]]
 
       viewable_projects =
         ProjectPolicy::Scope.new(requesting_account, target_account).viewable

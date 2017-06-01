@@ -4,7 +4,7 @@ describe 'Testing Project resource routes' do
   before do
     Configuration.dataset.destroy
     Project.dataset.destroy
-    Account.dataset.destroy
+    BaseAccount.dataset.destroy
   end
 
   describe 'Creating new owned project for account owner' do

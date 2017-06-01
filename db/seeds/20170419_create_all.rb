@@ -49,7 +49,7 @@ def add_contributors
   contrib_info = ALL_CONTRIB_INFO
   contrib_info.each do |contrib|
     proj = Project.find(name: contrib['proj_name'])
-    contributor = Account.find(username: contrib['contributor_name'])
+    contributor = BaseAccount.find(username: contrib['contributor_name'])
     proj.add_contributor(contributor)
   end
 end

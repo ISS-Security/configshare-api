@@ -4,7 +4,7 @@ describe 'Testing unit level properties of accounts' do
   before do
     Configuration.dataset.destroy
     Project.dataset.destroy
-    Account.dataset.destroy
+    BaseAccount.dataset.destroy
 
     @original_password = 'mypassword'
     @account = CreateAccount.call(
@@ -29,7 +29,7 @@ describe 'Testing Account resource routes' do
   before do
     Configuration.dataset.destroy
     Project.dataset.destroy
-    Account.dataset.destroy
+    BaseAccount.dataset.destroy
   end
 
   describe 'Creating new account' do

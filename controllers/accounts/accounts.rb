@@ -6,7 +6,7 @@ class ShareConfigurationsAPI < Sinatra::Base
     content_type 'application/json'
 
     id = params[:id]
-    account = Account.where(id: id).first
+    account = BaseAccount.first(id: id)
 
     if account
       projects = account.owned_projects

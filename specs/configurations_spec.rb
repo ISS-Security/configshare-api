@@ -6,7 +6,7 @@ describe 'Testing Configuration resource routes' do
   before do
     Configuration.dataset.destroy
     Project.dataset.destroy
-    Account.dataset.destroy
+    BaseAccount.dataset.destroy
   end
 
   describe 'Creating new configurations for projects' do
@@ -72,7 +72,7 @@ describe 'Creating Secure Content on Configurations' do
   before do
     Configuration.dataset.destroy
     Project.dataset.destroy
-    Account.dataset.destroy
+    BaseAccount.dataset.destroy
   end
 
   it 'HAPPY: should find existing configuration' do

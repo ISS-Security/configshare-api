@@ -2,17 +2,29 @@ require 'sequel'
 require 'json'
 
 # Holds and persists an account's information
-class Account < Sequel::Model
+class BaseAccount < Sequel::Model
+  plugin :single_table_inheritance, :type
   set_allowed_columns :username, :email
 
   one_to_many :owned_projects, class: :Project, key: :owner_id
   many_to_many :projects,
-               join_table: :accounts_projects,
+               join_table: :base_accounts_projects,
                left_key: :contributor_id, right_key: :project_id
 
   plugin :timestamps, update_on_create: true
   plugin :association_dependencies, owned_projects: :destroy
 
+  def to_json(options = {})
+    JSON({ type: type,
+           id: id,
+           username: username,
+           email: email },
+         options)
+  end
+end
+
+# Registered accounts with full credentials
+class Account < BaseAccount
   def password=(new_password)
     new_salt = SecureDB.new_salt
     hashed = SecureDB.hash_password(new_salt, new_password)
@@ -24,13 +36,8 @@ class Account < Sequel::Model
     try_hashed = SecureDB.hash_password(salt, try_password)
     try_hashed == password_hash
   end
+end
 
-  def to_json(options = {})
-    JSON({
-           type: 'account',
-           id: id,
-           username: username,
-           email: email
-         }, options)
-  end
+# SSO accounts without passwords
+class SsoAccount < BaseAccount
 end

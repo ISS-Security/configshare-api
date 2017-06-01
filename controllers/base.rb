@@ -23,7 +23,7 @@ class ShareConfigurationsAPI < Sinatra::Base
     return nil unless scheme.match?(/^Bearer$/i)
 
     account_payload = AuthToken.payload(auth_token)
-    Account[account_payload['id']]
+    BaseAccount[account_payload['id']]
   end
 
   def authorized_account?(env, id)

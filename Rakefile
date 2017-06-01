@@ -32,11 +32,8 @@ namespace :db do
   end
 
   task :reset_seeds do
-    # tables = [:schema_seeds, :accounts, :projects,
-    #           :accounts_projects, :configurations]
-    # tables.each { |table| DB[table].delete if DB.tables.include?(table) }
-    DB[:schema_seeds].delete
-    Account.dataset.destroy
+    DB[:schema_seeds].delete if DB.tables.include?(:schema_seeds)
+    BaseAccount.dataset.destroy
   end
 
   desc 'Seeds the development database'

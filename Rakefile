@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake/testtask'
 require './init.rb'
 
@@ -12,6 +14,11 @@ end
 desc 'Runs rubocop on tested code'
 task rubo: [:spec] do
   sh 'rubocop app.rb models/*.rb'
+end
+
+desc 'Run in development mode'
+task :run do
+  sh 'rerun -c "rackup -p 3000"'
 end
 
 namespace :db do
@@ -58,7 +65,18 @@ namespace :crypto do
     puts "DB_KEY: #{SecureDB.generate_key}"
   end
 
+  desc 'Create sample token key for communication'
   task :token_key do
     puts "TOKEN_KEY: #{AuthToken.generate_key}"
+  end
+
+  desc 'Create sample private/public keypair for signed communication'
+  task :signing_key do
+    require 'rbnacl/libsodium'
+    signing_key = RbNaCl::SigningKey.generate
+    verify_key = signing_key.verify_key
+
+    puts "SIGNING KEY: #{Base64.strict_encode64(signing_key)}"
+    puts " VERIFY KEY: #{Base64.strict_encode64(verify_key)}"
   end
 end

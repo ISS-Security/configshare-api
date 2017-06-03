@@ -5,6 +5,7 @@ require 'sinatra'
 # Configuration Sharing API Web Service
 class ShareConfigurationsAPI < Sinatra::Base
   extend Econfig::Shortcut
+  enable :logging
 
   configure do
     Econfig.env = settings.environment.to_s
